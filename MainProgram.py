@@ -6,10 +6,10 @@ if __name__ == "__main__":
     ae = AnalysisEngine.AnalysisEngine()
     # de = DrawingEngine.DrawingEngine()
 
-    # ae.getContentByParsingUrl(url)
+    #ae.getContentByParsingUrl(url)
+    #ae.extractFundsDetail()
 
-    # ae.extractFundsDetail()
-    # ae.getFundLsjzByParsingUrl()
+    #ae.getFundLsjzByParsingUrl()
     ae.saveFundLsjzByCodeno('320004')
     # de.Draw('320004')
 

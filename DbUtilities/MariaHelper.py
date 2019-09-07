@@ -87,6 +87,33 @@ class MariaHelper(IDbHelper):
             print('Error: failed to fetch data from table: %s, 错误: %s' %
                   (tName, e))
 
+    def SaveUpdateListToTable(self, table, list):
+        if len(table) == 0:
+            pass
+        if len(list) == 0:
+            pass
+
+        if table == 't_funds':
+            pass
+        elif table == 't_funds_lsjz':
+            self.sql = "select count(*) row_num from t_funds_lsjz"
+            self.cursor.execute(self.sql)
+            result = self.cursor.fetchone()
+
+            if  result['row_num'] == 0: # 整张表t_funds_lsjz无数据，直接插入list即可
+                return list
+
+            for idx in range(len(list)):
+                try:
+                    self.sql = "select fundcode, fsrq from t_funds_lsjz where fundcode = '%s' and fsrq = '%s'" % (list[idx][0], list[idx][1])
+                    self.cursor.execute(self.sql)
+                    self.cursor.fetchone()
+                    if self.cursor.rowcount != 0:
+                        return list[0:idx]
+                except Exception as e:
+                    print('【错误】%s' % (table, e))
+
+
     def save(self):
         pass
 
@@ -96,23 +123,20 @@ class MariaHelper(IDbHelper):
         if len(list) == 0:
             pass
 
-        self.sql = "truncate table " + table
-        # print(table)
-        # print(list)
+        list2Update = self.SaveUpdateListToTable(table, list)
 
-        try:
-            self.cursor.execute(self.sql)
-            print('成功清除表%s中的数据' % table)
-        except Exception as e:
-            print('清除表%s失败，错误%s' % (table, e))
+        if len(list2Update) == 0:
+            print('数据表【%s】没有新数据需要添加' % table)
+            return
+
         if table == 't_funds':
             self.sql = "insert into " + table + " values (%s, %s, %s)"
         elif table == 't_funds_lsjz':
-            self.sql = "insert into " + table + \
+            self.sql = "insert into " + table + " (fundcode, fsrq, dwjz, ljjz, sdate, actualsyi, navtype, jzzzl, sgzt, shzt, fhfcz, fhfcbz, dtype, fhsp)" + \
                 " values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
         try:
-            self.cursor.executemany(self.sql, list)
+            self.cursor.executemany(self.sql, list2Update)
             self.conn.commit()
             print('成功插入', self.cursor.rowcount, '条数据')
         except Exception as e:

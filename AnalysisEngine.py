@@ -1,15 +1,16 @@
-from DbUtilities.MariaHelper import MariaHelper
-import requests
-import random
-from lxml import etree
-import re
-import pandas as pd
-import math
-import json
-import threading
-import time
 import io
+import json
+import math
+import random
+import re
 import sys
+import threading
+
+import pandas as pd
+import requests
+from lxml import etree
+
+from DbUtilities.MariaHelper import MariaHelper
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8')
 
@@ -25,7 +26,8 @@ class AnalysisEngine(object):
         self.user_agents = [
             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
             "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 "
+            "Safari/536.3",
             "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
             "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
@@ -33,7 +35,8 @@ class AnalysisEngine(object):
             "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
             "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
-            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"]
+            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 "
+            "Safari/535.24"]
         self.header = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                        'Accept-Encoding': 'gzip, deflate, sdch',
                        'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6', 'Connection': 'keep-alive',
@@ -50,13 +53,14 @@ class AnalysisEngine(object):
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7,ru;q=0.6',
             'Connection': 'keep-alive',
-            'Cookie': 'qgqp_b_id=41c434be00dacbd13bca2d0f831d44ca; st_pvi=02911440853997; st_sp=2019-04-11%2023%3A18%3A14; st_inirUrl=; st_si=59935242760746; st_sn=1; st_psi=20190411231813797-0-1868636963; st_asi=delete',
+            'Cookie': 'em_hq_fls=js; em-quote-version=topspeed; HAList=f-0-000001-%u4E0A%u8BC1%u6307%u6570%2Ca-sh-600009-%u4E0A%u6D77%u673A%u573A; qgqp_b_id=21f44dff5036513cd2d5c2b80dfa280d; emshistory=%5B%22000001%20(%E4%B8%8A%E8%AF%81%E6%8C%87%E6%95%B0)%22%5D; EMFUND1=null; EMFUND2=null; EMFUND3=null; EMFUND4=null; EMFUND5=null; EMFUND6=null; EMFUND7=null; EMFUND8=null; EMFUND0=null; EMFUND9=08-26 23:00:50@#$%u8BFA%u5B89%u4F18%u5316%u6536%u76CA%u503A%u5238@%23%24320004; st_si=35231077118532; st_pvi=02911440853997; st_sp=2019-04-11%2023%3A18%3A14; st_inirUrl=http%3A%2F%2Ffundf10.eastmoney.com%2Fjjjz_320004.html; st_sn=1; st_psi=20190826230050423-0-1394237648; st_asi=delete',
             'Host': 'api.fund.eastmoney.com',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.99 YaBrowser/19.1.1.909 Yowser/2.5 Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.99 '
+                          'YaBrowser/19.1.1.909 Yowser/2.5 Safari/537.36',
             'Referer': 'http://fundf10.eastmoney.com/jjjz_%s.html' % self.fundCode
         }
         self.lsjzParam = {
-            'callback': 'jQuery18307293101866392497_1551105476194',
+            'callback': 'jQuery18300008243814287884899_1566831765493',
             'pageSize': self.pageSize,
             'fundCode': self.fundCode,
             'pageIndex': self.pageIndex,
@@ -89,7 +93,8 @@ class AnalysisEngine(object):
 
         resultCount = len(results)
         for i in range(self.lsjzThreadCount):
-            for row in results[int(resultCount * i/self.lsjzThreadCount): int(resultCount * (i+1)/self.lsjzThreadCount)]:
+            for row in results[
+                       int(resultCount * i / self.lsjzThreadCount): int(resultCount * (i + 1) / self.lsjzThreadCount)]:
                 self.fundCode = row['codeno']
                 self.lsjzHeader['Referer'] = 'http://fundf10.eastmoney.com/jjjz_%s.html' % self.fundCode
                 self.lsjzParam['fundCode'] = self.fundCode
@@ -145,6 +150,11 @@ class AnalysisEngine(object):
         lsjzList = json.loads(tt)['Data']['LSJZList']  # 获取历史净值数据
         lsjzDF = pd.DataFrame(lsjzList)
         lsjzDF.insert(0, 'fundCode', self.fundCode)
+        lsjzDF[['DWJZ', 'LJJZ', 'JZZZL']] = lsjzDF[['DWJZ', 'LJJZ', 'JZZZL']].apply(pd.to_numeric, errors='ignore')
+
+        lsjzDF = lsjzDF.astype(object).where(pd.notnull(lsjzDF), None)
+        # print(lsjzDF)
+
         fund_lsjz_list.extend(lsjzDF.values.tolist())
 
         self.mutex.release()
