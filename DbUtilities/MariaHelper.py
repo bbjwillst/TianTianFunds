@@ -88,11 +88,6 @@ class MariaHelper(IDbHelper):
                   (tName, e))
 
     def SaveUpdateListToTable(self, table, list):
-        if len(table) == 0:
-            pass
-        if len(list) == 0:
-            pass
-
         if table == 't_funds':
             pass
         elif table == 't_funds_lsjz':
@@ -105,7 +100,7 @@ class MariaHelper(IDbHelper):
 
             for idx in range(len(list)):
                 try:
-                    self.sql = "select fundcode, fsrq from t_funds_lsjz where fundcode = '%s' and fsrq = '%s'" % (list[idx][0], list[idx][1])
+                    self.sql = "select fundcode from t_funds_lsjz where fundcode = '%s' and fsrq = '%s'" % (list[idx][0], list[idx][1])
                     self.cursor.execute(self.sql)
                     self.cursor.fetchone()
                     if self.cursor.rowcount != 0:
