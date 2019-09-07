@@ -96,11 +96,11 @@ class MariaHelper(IDbHelper):
         if table == 't_funds':
             pass
         elif table == 't_funds_lsjz':
-            self.sql = "select count(*) row_num from t_funds_lsjz"
-            self.cursor.execute(self.sql)
+            sql = "select count(*) row_num from t_funds_lsjz where fundcode = '%s'" % (list[0][0])
+            self.cursor.execute(sql)
             result = self.cursor.fetchone()
 
-            if  result['row_num'] == 0: # 整张表t_funds_lsjz无数据，直接插入list即可
+            if  result['row_num'] == 0: # 整张表t_funds_lsjz无关于fundcode的数据，直接插入list即可
                 return list
 
             for idx in range(len(list)):

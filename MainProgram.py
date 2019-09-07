@@ -10,7 +10,7 @@ if __name__ == "__main__":
     #ae.extractFundsDetail()
 
     #ae.getFundLsjzByParsingUrl()
-    ae.saveFundLsjzByCodeno('320004')
+    ae.saveFundLsjzByCodeno('110011')
     # de.Draw('320004')
 
     print("Finished!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
