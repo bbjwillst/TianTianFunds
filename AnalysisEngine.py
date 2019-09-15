@@ -106,11 +106,20 @@ class AnalysisEngine(object):
                 lsjzDF = pd.DataFrame(lsjzList)
                 lsjzDF['fundCode'] = self.fundCode
 
+    def saveFundLsjzByCodenoList(self, codenoList):
+        if len(codenoList) == 0:
+            return
+
+        for idx in range(len(codenoList)):
+            self.saveFundLsjzByCodeno(codenoList[idx])
+
     def saveFundLsjzByCodeno(self, codeno):
         mh = MariaHelper()
         result = mh.queryByCodeno('t_funds', codeno)
         if result == None:
             pass
+
+        fund_lsjz_list.clear()
 
         # result的格式为: [{'codeno': '000001', 'name': '华夏成长', 'url': 'http://fund.eastmoney.com/000001.html'}]
         self.fundCode = result[0]['codeno']
